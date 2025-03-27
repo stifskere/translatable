@@ -14,6 +14,7 @@ Our goal is not to be *blazingly fast* but to provide the most user-friendly exp
 - [Installation](#installation-)
 - [Usage](#usage-)
 - [Example implementation](#example-implementation-)
+- [Licensing](#license-)
 
 ## Features 🚀
 
@@ -152,7 +153,7 @@ fn main() {
 }
 ```
 
-## License
+## License 📜
 
 <sup>
 This repository is licensed under either of <a href="LICENSE-APACHE">Apache License, Version 2.0</a>
