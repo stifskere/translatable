@@ -3,6 +3,12 @@ coverage:
     project:
       default:
         target: 80%
+<<<<<<< HEAD
     patch:
       default:
         target: 80%
+=======
+        threshold: 1%
+        if_not_found: success
+        informational: false
+>>>>>>> 10f8e4d (feat(coverage): set 80%)
