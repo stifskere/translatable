@@ -16,11 +16,5 @@ keywords = [
 ]
 
 [dependencies]
-thiserror = "2.0.12"
-translatable_proc = { version = "1", path = "../translatable_proc" }
-translatable_shared = { version = "1", path = "../translatable_shared/" }
 
 [dev-dependencies]
-quote = "1.0.40"
-toml_edit = "0.22.26"
-trybuild = "1.0.105"
