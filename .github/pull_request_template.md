@@ -35,6 +35,10 @@
 
 	Usually a single pull request should solve a single
 	issue, but if it's the case please, add issues to the list.
+
+	If there are no linked issues the merge may be denied,
+	if you are sure that what you are doing doesn't require
+	an issue then you can delete this whole section.
 -->
 
 - fixes #<issue_number>
