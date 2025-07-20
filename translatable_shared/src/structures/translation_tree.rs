@@ -12,7 +12,7 @@ use toml_edit::{DocumentMut, Item as TomlItem, Table as TomlTable, Value as Toml
 use crate::structures::language::{Language, LanguageError};
 use crate::structures::file_position::FileLocation;
 use crate::structures::templated_string::{TemplateParseError, TemplatedString};
-use crate::structures::translatable_error::TranslatableError;
+use crate::structures::file_related_error::{FileRelatedError};
 
 #[derive(Error, Debug, Clone)]
 pub enum TranslationTreeErrorDescription {
@@ -65,7 +65,7 @@ pub enum TranslationTreeErrorDescription {
     TemplateError(#[from] TemplateParseError)
 }
 
-type TranslationTreeParseError = TranslatableError<TranslationTreeErrorDescription>;
+type TranslationTreeParseError = FileRelatedError<TranslationTreeErrorDescription>;
 
 #[derive(Error, Debug)]
 pub enum TranslationNotFound {
@@ -231,6 +231,8 @@ impl TranslationTree {
     fn collect_translations(source: Option<&Path>, raw_contents: &str, table: &TomlTable) -> Self {
         let mut result = None;
 
+        // HACK: This may be rewritten and should use less nesting
+        // i.e use error-first logic.
         for (key, value) in table {
             match value {
                 TomlItem::Value(TomlValue::String(value)) => {

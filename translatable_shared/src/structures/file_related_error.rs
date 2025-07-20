@@ -8,14 +8,43 @@ use quote::{ToTokens, quote};
 use crate::structures::file_position::FileLocation;
 use crate::utils::{option_stream, path_to_tokens};
 
+#[expect(unused_macros)]
+macro_rules! file_related_error {
+    ([$desc:expr] in [$file_path:expr] in [$at_character:expr]) => {
+        $crate::structures::file_related_error::FileRelatedError {
+            description: $desc,
+            file_path: Some($file_path),
+            at_character: Some($at_character)
+        }
+    };
+
+    ([$desc:expr] in [$file_path:expr]) => {
+        $crate::structures::file_related_error::FileRelatedError {
+            description: $desc,
+            file_path: Some($file_path),
+            at_character: None
+        }
+    };
+
+    ([$desc:expr]) => {
+        $crate::structures::file_related_error::FileRelatedError {
+            description: $desc,
+            file_path: None,
+            at_character: None
+        }
+    }
+}
+
+pub(crate) use file_related_error;
+
 #[derive(Debug, PartialEq, Eq, Hash)]
-pub struct TranslatableError<TDesc: Sized + Display> {
+pub struct FileRelatedError<TDesc: Sized + Display> {
     pub(crate) description: TDesc,
     pub(crate) file_path: Option<PathBuf>,
     pub(crate) at_character: Option<FileLocation>
 }
 
-impl<TDesc: Sized + Display> TranslatableError<TDesc> {
+impl<TDesc: Sized + Display> FileRelatedError<TDesc> {
     #[inline(always)]
     pub const fn from_data(
         description: TDesc,
@@ -45,7 +74,7 @@ impl<TDesc: Sized + Display> TranslatableError<TDesc> {
     }
 }
 
-impl<TDesc: Sized + Display> Display for TranslatableError<TDesc> {
+impl<TDesc: Sized + Display> Display for FileRelatedError<TDesc> {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         write!(
             f,
@@ -74,7 +103,7 @@ impl<TDesc: Sized + Display> Display for TranslatableError<TDesc> {
     }
 }
 
-impl<TDesc: Sized + Display + ToTokens> ToTokens for TranslatableError<TDesc> {
+impl<TDesc: Sized + Display + ToTokens> ToTokens for FileRelatedError<TDesc> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let description = &self.description;
         let file_path = option_stream(&self.file_path().map(|p| path_to_tokens(p)));
@@ -90,9 +119,9 @@ impl<TDesc: Sized + Display + ToTokens> ToTokens for TranslatableError<TDesc> {
     }
 }
 
-impl<TDesc: Sized + Debug + Display> Error for TranslatableError<TDesc> {}
+impl<TDesc: Sized + Debug + Display> Error for FileRelatedError<TDesc> {}
 
-impl<TDesc: Sized + Display + Clone> Clone for TranslatableError<TDesc> {
+impl<TDesc: Sized + Display + Clone> Clone for FileRelatedError<TDesc> {
     fn clone(&self) -> Self {
         Self {
             description: self.description.clone(),

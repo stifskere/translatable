@@ -8,7 +8,7 @@ use thiserror::Error;
 use toml_edit::{TomlError, DocumentMut};
 use dyn_path::{dyn_access, dyn_path};
 
-use crate::structures::translatable_error::TranslatableError;
+use crate::structures::file_related_error::FileRelatedError;
 use crate::structures::file_position::FileLocation;
 use crate::structures::language::{Language, LanguageError};
 
@@ -35,7 +35,7 @@ pub enum ConfigErrorDescription {
     }
 }
 
-type ConfigError = TranslatableError<ConfigErrorDescription>;
+type ConfigError = FileRelatedError<ConfigErrorDescription>;
 
 pub struct Config {
     // sources section
