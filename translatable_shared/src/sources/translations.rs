@@ -2,7 +2,13 @@ use std::collections::hash_map::Entry;
 use std::path::PathBuf;
 use std::collections::HashMap;
 
+#[cfg(feature = "internal")]
+use std::sync::OnceLock;
+
 use crate::structures::translation_tree::TranslationTree;
+
+#[cfg(feature = "internal")]
+use crate::sources::config::{Config, ConfigError};
 
 enum TranslationTreeSource {
     File(PathBuf),
@@ -74,4 +80,14 @@ impl TranslationTreeBuilder {
 
         TranslationTree::Nesting(root)
     }
+}
+
+#[cfg(feature = "internal")]
+pub fn tree_from_config() -> Result<TranslationTree, ConfigError> {
+    static CACHED: OnceLock<TranslationTree> = OnceLock::new();
+    let config = Config::load_cached()?;
+
+    
+
+    unimplemented!()
 }

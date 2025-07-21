@@ -17,7 +17,7 @@ use ::{
 };
 
 #[cfg(feature = "internal")]
-use crate::utils::option_stream;
+use crate::utils::internal::option_stream;
 
 #[derive(Debug, Clone)]
 pub struct LanguageError {

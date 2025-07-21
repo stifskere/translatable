@@ -11,7 +11,7 @@ use ::{
 use crate::structures::file_position::FileLocation;
 
 #[cfg(feature = "internal")]
-use crate::utils::{option_stream, path_to_tokens};
+use crate::utils::internal::{option_stream, path_to_tokens};
 
 // HACK: We should probably abstract this to a macro
 // like so, whenever this becomes implemented

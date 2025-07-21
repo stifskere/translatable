@@ -1,3 +1,5 @@
+#![cfg(feature = "internal")]
+
 use std::fs::read_to_string;
 use std::env::var;
 use std::path::Path;
@@ -35,7 +37,7 @@ pub enum ConfigErrorDescription {
     }
 }
 
-type ConfigError = FileRelatedError<ConfigErrorDescription>;
+pub(super) type ConfigError = FileRelatedError<ConfigErrorDescription>;
 
 pub struct Config {
     // sources section
