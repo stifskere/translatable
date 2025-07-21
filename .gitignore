@@ -3,3 +3,5 @@
 .direnv
 
 **/*.lcov
+
+*-lsp-config.toml

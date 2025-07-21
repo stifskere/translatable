@@ -1,3 +1,5 @@
+#![cfg(feature = "internal")]
+
 use proc_macro2::Span;
 use syn::{Ident, Result as SynResult, Token};
 use syn::parse::{Parse, ParseStream};
@@ -33,6 +35,7 @@ impl Path {
     }
 }
 
+#[cfg(feature = "internal")]
 impl Parse for Path {
     fn parse(input: ParseStream) -> SynResult<Self> {
         Ok(Self {

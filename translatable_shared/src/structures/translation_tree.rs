@@ -4,10 +4,14 @@ use std::hash::{Hash, Hasher};
 use std::path::Path;
 
 use edit_distance::edit_distance;
-use proc_macro2::TokenStream;
-use quote::{quote, ToTokens};
 use thiserror::Error;
 use toml_edit::{DocumentMut, Item as TomlItem, Table as TomlTable, Value as TomlValue};
+
+#[cfg(feature = "internal")]
+use ::{
+    proc_macro2::TokenStream,
+    quote::{quote, ToTokens}
+};
 
 use crate::structures::language::{Language, LanguageError};
 use crate::structures::file_position::FileLocation;
@@ -125,6 +129,7 @@ pub enum TranslationTree {
     #[non_exhaustive] NestingError(TranslationTreeParseError)
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for TranslationTreeErrorDescription {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(quote! { ::translatable::prelude::TreeErrorDescription:: });
@@ -190,6 +195,7 @@ impl Translation {
     }
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for Translation {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let possibilities = self.0
@@ -468,6 +474,7 @@ impl From<&str> for TranslationTree {
     }
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for TranslationTree {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         match self {

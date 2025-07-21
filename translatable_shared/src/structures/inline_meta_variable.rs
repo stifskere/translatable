@@ -1,3 +1,5 @@
+#![cfg(feature = "internal")]
+
 use proc_macro2::TokenStream;
 use quote::ToTokens;
 use syn::{parse::{Parse, ParseStream}, parse2, Expr, Ident, Result as SynResult, Token};

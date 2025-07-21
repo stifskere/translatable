@@ -2,9 +2,13 @@ use std::str::FromStr;
 use std::ops::Range;
 use std::collections::HashMap;
 
-use proc_macro2::TokenStream;
-use quote::{quote, ToTokens, TokenStreamExt};
 use thiserror::Error;
+
+#[cfg(feature = "internal")]
+use ::{
+    proc_macro2::TokenStream,
+    quote::{quote, ToTokens, TokenStreamExt}
+};
 
 use crate::utils::is_ident;
 
@@ -32,6 +36,7 @@ pub struct TemplatedString {
     spans: Vec<(String, Range<usize>)>
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for TemplateParseError {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(quote! { ::translatable::prelude::TemplateParseError:: });
@@ -131,6 +136,7 @@ impl FromStr for TemplatedString {
     }
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for TemplatedString {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let original = &self.original;

@@ -1,14 +1,22 @@
 use std::str::FromStr;
-use std::fmt::{Display, Formatter, Result as FmtResult, Write};
+use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::error::Error;
 
-use edit_distance::edit_distance;
-use proc_macro2::{Span, TokenStream, TokenTree};
-use quote::{format_ident, quote, ToTokens};
-use strum::{EnumIter, EnumProperty, IntoEnumIterator};
-use syn::parse::{Parse, ParseStream};
-use syn::{Result as SynResult, Error as SynError};
+#[cfg(feature = "internal")]
+use std::fmt::Write;
 
+use edit_distance::edit_distance;
+use strum::{EnumIter, EnumProperty, IntoEnumIterator};
+
+#[cfg(feature = "internal")]
+use ::{
+    proc_macro2::{Span, TokenStream, TokenTree},
+    quote::{format_ident, quote, ToTokens},
+    syn::parse::{Parse, ParseStream},
+    syn::{Result as SynResult, Error as SynError}
+};
+
+#[cfg(feature = "internal")]
 use crate::utils::option_stream;
 
 #[derive(Debug, Clone)]
@@ -38,6 +46,7 @@ impl LanguageError {
     }
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for LanguageError {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let attempt = &self.attempt;
@@ -94,6 +103,7 @@ impl Language {
     }
 }
 
+#[cfg(feature = "internal")]
 impl Parse for Language {
     fn parse(input: ParseStream) -> SynResult<Self> {
         let mut raw = String::new();
@@ -159,6 +169,7 @@ impl FromStr for Language {
     }
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for Language {
     #[inline(always)]
     fn to_tokens(&self, tokens: &mut TokenStream) {

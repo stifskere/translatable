@@ -15,6 +15,7 @@ pub fn is_ident(candidate: &str) -> bool {
 }
 
 #[inline(always)]
+#[cfg_attr(not(feature = "internal"), allow(dead_code))]
 pub fn option_stream<T: ToTokens>(opt: &Option<T>) -> TokenStream {
     match opt {
         Some(val) => quote! { ::std::option::Option::Some(#val) },
@@ -22,6 +23,7 @@ pub fn option_stream<T: ToTokens>(opt: &Option<T>) -> TokenStream {
     }
 }
 
+#[cfg_attr(not(feature = "internal"), allow(dead_code))]
 pub fn path_to_tokens(path: &Path) -> TokenStream {
     let path = path.to_string_lossy();
     quote! { ::std::path::Path::from(#path) }

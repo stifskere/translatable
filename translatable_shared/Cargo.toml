@@ -17,3 +17,6 @@ strum = { version = "0.27.1", features = ["derive"] }
 syn = { version = "2.0.101", features = ["full"] }
 thiserror = "2.0.12"
 toml_edit = "0.22.27"
+
+[features]
+internal = []

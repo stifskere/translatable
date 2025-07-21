@@ -1,8 +1,11 @@
 use std::ops::Range;
 use std::fmt::{Display, Formatter, Result as FmtResult};
 
-use proc_macro2::TokenStream;
-use quote::{quote, ToTokens};
+#[cfg(feature = "internal")]
+use ::{
+    proc_macro2::TokenStream,
+    quote::{quote, ToTokens}
+};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct FileLocation {
@@ -85,6 +88,7 @@ impl Display for FileLocation {
     }
 }
 
+#[cfg(feature = "internal")]
 impl ToTokens for FileLocation {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let line = self.line;

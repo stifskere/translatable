@@ -2,12 +2,19 @@ use std::path::PathBuf;
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 use std::error::Error;
 
-use proc_macro2::TokenStream;
-use quote::{ToTokens, quote};
+#[cfg(feature = "internal")]
+use ::{
+    proc_macro2::TokenStream,
+    quote::{ToTokens, quote},
+};
 
 use crate::structures::file_position::FileLocation;
+
+#[cfg(feature = "internal")]
 use crate::utils::{option_stream, path_to_tokens};
 
+// HACK: We should probably abstract this to a macro
+// like so, whenever this becomes implemented
 #[expect(unused_macros)]
 macro_rules! file_related_error {
     ([$desc:expr] in [$file_path:expr] in [$at_character:expr]) => {
@@ -35,6 +42,7 @@ macro_rules! file_related_error {
     }
 }
 
+#[expect(unused_imports)]
 pub(crate) use file_related_error;
 
 #[derive(Debug, PartialEq, Eq, Hash)]
@@ -103,6 +111,7 @@ impl<TDesc: Sized + Display> Display for FileRelatedError<TDesc> {
     }
 }
 
+#[cfg(feature = "internal")]
 impl<TDesc: Sized + Display + ToTokens> ToTokens for FileRelatedError<TDesc> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let description = &self.description;
