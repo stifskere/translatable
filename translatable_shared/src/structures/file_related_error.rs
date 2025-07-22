@@ -13,38 +13,6 @@ use crate::structures::file_position::FileLocation;
 #[cfg(feature = "internal")]
 use crate::utils::internal::{option_stream, path_to_tokens};
 
-// HACK: We should probably abstract this to a macro
-// like so, whenever this becomes implemented
-#[expect(unused_macros)]
-macro_rules! file_related_error {
-    ([$desc:expr] in [$file_path:expr] in [$at_character:expr]) => {
-        $crate::structures::file_related_error::FileRelatedError {
-            description: $desc,
-            file_path: Some($file_path),
-            at_character: Some($at_character)
-        }
-    };
-
-    ([$desc:expr] in [$file_path:expr]) => {
-        $crate::structures::file_related_error::FileRelatedError {
-            description: $desc,
-            file_path: Some($file_path),
-            at_character: None
-        }
-    };
-
-    ([$desc:expr]) => {
-        $crate::structures::file_related_error::FileRelatedError {
-            description: $desc,
-            file_path: None,
-            at_character: None
-        }
-    }
-}
-
-#[expect(unused_imports)]
-pub(crate) use file_related_error;
-
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct FileRelatedError<TDesc: Sized + Display> {
     pub(crate) description: TDesc,
@@ -54,6 +22,7 @@ pub struct FileRelatedError<TDesc: Sized + Display> {
 
 impl<TDesc: Sized + Display> FileRelatedError<TDesc> {
     #[inline(always)]
+    #[doc(hidden)]
     pub const fn from_data(
         description: TDesc,
         file_path: Option<PathBuf>,
@@ -64,6 +33,33 @@ impl<TDesc: Sized + Display> FileRelatedError<TDesc> {
             file_path,
             at_character
         }
+    }
+
+    #[cfg(feature = "preparsing")]
+    #[inline(always)]
+    pub const fn with_desc_only(description: TDesc) -> Self {
+        Self::from_data(description, None, None)
+    }
+
+    #[cfg(feature = "preparsing")]
+    #[inline(always)]
+    pub const fn with_desc_and_path(description: TDesc, file_path: Option<PathBuf>) -> Self {
+        Self::from_data(description, file_path, None)
+    }
+
+    // NOTE: binding for public API
+    #[cfg(feature = "preparsing")]
+    #[inline(always)]
+    pub const fn complete(
+        description: TDesc,
+        file_path: Option<PathBuf>,
+        at_character: Option<FileLocation>
+    ) -> Self {
+        Self::from_data(
+            description,
+            file_path,
+            at_character
+        )
     }
 
     #[inline(always)]

@@ -1,7 +1,11 @@
 use std::collections::HashMap;
+use std::fmt::Display;
 use std::fs::read_to_string;
 use std::hash::{Hash, Hasher};
 use std::path::Path;
+
+#[cfg(feature = "preparsing")]
+use std::error::Error as StdError;
 
 use edit_distance::edit_distance;
 use thiserror::Error;
@@ -13,10 +17,19 @@ use ::{
     quote::{quote, ToTokens}
 };
 
+#[cfg(feature = "preparsing")]
+use dyn_clone::{DynClone, clone_trait_object};
+
 use crate::structures::language::{Language, LanguageError};
 use crate::structures::file_position::FileLocation;
 use crate::structures::templated_string::{TemplateParseError, TemplatedString};
 use crate::structures::file_related_error::{FileRelatedError};
+
+#[cfg(feature = "preparsing")]
+pub trait GenericTreeError: StdError + DynClone + Display {}
+
+#[cfg(feature = "preparsing")]
+clone_trait_object!(GenericTreeError);
 
 #[derive(Error, Debug, Clone)]
 pub enum TranslationTreeErrorDescription {
@@ -66,10 +79,14 @@ pub enum TranslationTreeErrorDescription {
     An error occurred while parsing templates
     for a translation string in this branch.
     "#)]
-    TemplateError(#[from] TemplateParseError)
+    TemplateError(#[from] TemplateParseError),
+
+    #[cfg(all(not(feature = "internal"), feature = "preparsing"))]
+    #[error("{0:#}")]
+    GenericError(Box<dyn GenericTreeError>)
 }
 
-type TranslationTreeParseError = FileRelatedError<TranslationTreeErrorDescription>;
+pub type TranslationTreeParseError = FileRelatedError<TranslationTreeErrorDescription>;
 
 #[derive(Error, Debug)]
 pub enum TranslationNotFound {

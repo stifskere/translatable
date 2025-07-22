@@ -5,14 +5,20 @@ use std::collections::HashMap;
 #[cfg(feature = "internal")]
 use std::sync::OnceLock;
 
-use crate::structures::translation_tree::TranslationTree;
+#[cfg(feature = "internal")]
+use walkdir::WalkDir;
+
+use crate::structures::translation_tree::{TranslationTree, TranslationTreeParseError};
 
 #[cfg(feature = "internal")]
 use crate::sources::config::{Config, ConfigError};
 
 enum TranslationTreeSource {
     File(PathBuf),
-    Raw(String)
+    Raw(String),
+
+    #[cfg(feature = "preparsing")]
+    Error(TranslationTreeParseError)
 }
 
 pub struct TranslationTreeBuilder {
@@ -43,6 +49,11 @@ impl TranslationTreeBuilder {
         self
     }
 
+    #[cfg(feature = "preparsing")]
+    pub fn with_error_source(&mut self, path: Vec<String>, error: TranslationTreeParseError) -> &mut Self {
+        unimplemented!()
+    }
+
     pub fn build(self) -> TranslationTree {
         let mut root = HashMap::<String, TranslationTree>::new();
 
@@ -50,8 +61,11 @@ impl TranslationTreeBuilder {
             let mut cursor = &mut root;
             let mut segments = path.iter().peekable();
             let tree = match source {
+                #[cfg(feature = "preparsing")]
+                TranslationTreeSource::Error(error) => TranslationTree::NestingError(error),
+
                 TranslationTreeSource::File(path) => TranslationTree::from(path.as_path()),
-                TranslationTreeSource::Raw(raw) => TranslationTree::from(raw.as_str())
+                TranslationTreeSource::Raw(raw) => TranslationTree::from(raw.as_str()),
             };
 
             while let Some(segment) = segments.next() {
@@ -83,8 +97,14 @@ impl TranslationTreeBuilder {
 }
 
 #[cfg(feature = "internal")]
-pub fn tree_from_config() -> Result<TranslationTree, ConfigError> {
+pub fn tree_from_config() -> Result<&'static TranslationTree, ConfigError> {
     static CACHED: OnceLock<TranslationTree> = OnceLock::new();
+
+    if let Some(cached) = CACHED.get() {
+        return Ok(cached);
+    }
+
+    let mut builder = TranslationTreeBuilder::new();
     let config = Config::load_cached()?;
 
     
