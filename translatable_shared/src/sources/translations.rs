@@ -8,10 +8,13 @@ use std::sync::OnceLock;
 #[cfg(feature = "internal")]
 use walkdir::WalkDir;
 
-use crate::structures::translation_tree::{TranslationTree, TranslationTreeParseError};
+use crate::structures::translation_tree::TranslationTree;
 
 #[cfg(feature = "internal")]
-use crate::sources::config::{Config, ConfigError};
+use crate::{
+    sources::config::{Config, ConfigError},
+    structures::translation_tree::TranslationTreeParseError
+};
 
 enum TranslationTreeSource {
     File(PathBuf),
@@ -94,20 +97,4 @@ impl TranslationTreeBuilder {
 
         TranslationTree::Nesting(root)
     }
-}
-
-#[cfg(feature = "internal")]
-pub fn tree_from_config() -> Result<&'static TranslationTree, ConfigError> {
-    static CACHED: OnceLock<TranslationTree> = OnceLock::new();
-
-    if let Some(cached) = CACHED.get() {
-        return Ok(cached);
-    }
-
-    let mut builder = TranslationTreeBuilder::new();
-    let config = Config::load_cached()?;
-
-    
-
-    unimplemented!()
 }

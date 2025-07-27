@@ -26,9 +26,7 @@ walkdir = { version = "2.5.0", optional = true }
 
 [features]
 default = []
-preparsing = [
-	"dyn-clone"
-]
+preparsing = ["dyn-clone"]
 
 internal = [
 	"dyn_path",

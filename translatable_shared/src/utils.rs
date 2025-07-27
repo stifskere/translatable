@@ -9,7 +9,6 @@ pub fn is_ident(candidate: &str) -> bool {
     chars.all(|c| c == '_' || c.is_ascii_alphanumeric())
 }
 
-
 #[cfg(feature = "internal")]
 pub mod internal {
     use std::path::Path;
