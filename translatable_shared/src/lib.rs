@@ -1,15 +1,9 @@
-//! Shared util declarations for `translatable` and `translatable_proc`
+//! Translatable Shared Library
 //!
-//! This crate shouldn't be used by itself,
-//! since it contains macro generation code which
-//! relies on references from the `translatable` library.
-//!
-//! The `translatable` library re-exports the utils
-//! declared in this crate and exposes the necessary
-//! ones.
+//! This library works with the translatable crate.
+//! It reexports common modules between the runtime crate
+//! and the macro generation crate.
 
-#![warn(missing_docs)]
-
-pub mod macros;
-pub mod misc;
-pub mod translations;
+pub mod sources;
+pub mod structures;
+pub(crate) mod utils;
