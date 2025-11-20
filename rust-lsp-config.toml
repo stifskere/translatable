@@ -1,0 +1,2 @@
+[settings.rust-analyzer.cargo]
+features = ["internal", "preparsing"]
