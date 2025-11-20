@@ -7,7 +7,7 @@ considering submitting any of the above.
 ## Submitting Bug Reports and Feature Requests
 
 To submit a bug report or feature request, you can open an issue in this
-repository: [`FlakySL/translatable`](https://github.com/FlakySL/translatable).
+repository: [`stifskere/translatable`](https://github.com/stifskere/translatable).
 
 When reporting a bug or requesting help, please include sufficient details
 to allow others to reproduce the behavior you're encountering. For guidance on
@@ -22,7 +22,7 @@ When making a feature request, please clearly explain:
 
 Before submitting, please verify that no existing issue addresses your specific
 problem/request. If you want to elaborate on a problem or discuss it further,
-you can use our [Discord channel](https://discord.gg/AJWFyps23a) at Flaky.
+you can use our [Discord channel](https://discord.memw.es).
 
 We recommend using the issue templates provided in this repository.
 
@@ -49,8 +49,7 @@ This project uses GNU [make](https://www.gnu.org/software/make/).
 ## Code of Conduct
 
 The Translatable community follows the [Rust Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct).
-For moderation issues or escalation, please contact Esteve or Luis at
-[moderation@flaky.es](mailto:moderation@flaky.es) rather than the Rust
-moderation team.
+For moderation issues or escalation, please contact Esteve at
+[oss@memw.es](mailto:oss@memw.es) rather than the Rust moderation team.
 
 [testing documentation]: ./translatable/tests/README.md

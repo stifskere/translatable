@@ -215,8 +215,6 @@ fn main() {
 
 ## License 📜
 
-This repository is dual licensed, TLDR. If your repository is open source, the library
-is free of use, otherwise contact [licensing@flaky.es](mailto:licensing@flaky.es) for a custom license for your
-use case.
-
-For more information read the [license](./LICENSE) file.
+This repository is dual licensed, you can use [Apache-2](./LICENSE-APACHE)
+or [MIT](./LICENSE-MIT) at your option. Both licenses are provided at
+the project root.

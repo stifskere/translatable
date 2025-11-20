@@ -1,9 +1,12 @@
-# Governance and Moderation
+## Governance
 
-This project is mainly maintained by the authors
+This project is now maintained by one person, if you want to
+help maintain this project feel free to contact any of the
+existing maintainers.
 
-- Esteve Autet `esteve.autet@flaky.es`
-- Chiko `luis.degnan@flaky.es`
+### Current Maintainers
+- Esteve Autet <oss@memw.es>
 
-There is no hierarchy established (yet) but this might be subject to
-change soon. For any inquiries you can contact any of the emails listed above.
+### Maintainer History
+- (2/2025 to 5/2025) Luis Degnan <luis.degnan@flaky.es>
+
